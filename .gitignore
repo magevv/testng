@@ -1,0 +1,12 @@
+Thumbs.db
+*.class
+*.avi
+*.png
+.idea/
+
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
