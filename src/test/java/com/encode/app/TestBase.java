@@ -10,12 +10,12 @@ public class TestBase {
 
     @BeforeTest
     public void systemStart() {
-        System.out.println("System started");
+        System.out.println("----- System started -----");
     }
 
     @AfterTest
     public void systemStop() {
-        System.out.println("System stopped");
+        System.out.println("----- System stopped -----");
     }
 
 }

@@ -6,14 +6,17 @@ import java.io.File;
 import java.io.IOException;
 
 /*
- Positive
- 1. New empty file is created in the right directory
- 2. Function returns TRUE if file was successfully created
- 3. Function returns FALSE if file with such name already exists
+Testing Java function File.createNewFile()
 
- Negative
- 4. Correct exception if directory is read-only (Linux only)
+Positive tests
+  1. New empty file is created in the right directory
+  2. Function returns TRUE if file was successfully created
+  3. Function returns FALSE if file with such name already exists
+
+Negative tests
+  4. Exception if directory is read-only (works on Linux only)
  */
+
 public class CreateFileTest extends TestBase {
 
     File dir;
@@ -28,11 +31,14 @@ public class CreateFileTest extends TestBase {
     @AfterMethod
     public void tearDown() {
         // Cleanup
-        File[] files = dir.listFiles();
-        for (int i = 0; i < files.length; i++) {
-            files[i].delete();
+        if(dir != null) {
+            dir.canWrite();
+            File[] files = dir.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                files[i].delete();
+            }
+            dir.delete();
         }
-        dir.delete();
         System.out.println("Cleaned up");
     }
 
@@ -59,14 +65,13 @@ public class CreateFileTest extends TestBase {
     }
 
     @Test
-    public void test4() throws IOException {
+    public void test4() {
         File f = new File(dir + "/temp.txt");
         dir.setReadOnly(); // Linux only
         try {
             f.createNewFile();
-        } catch (SecurityException e) {
-            System.out.println("read-only access");
+        } catch (IOException e) {
+            System.out.println("cannot write file to read-only directory");
         }
     }
-
 }
