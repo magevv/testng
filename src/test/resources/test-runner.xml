@@ -1,0 +1,25 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Suite1" verbose="1" >
+    <test name="Test1" >
+        <groups>
+            <run>
+                <include name="negative"  />
+                <include name="positive"  />
+            </run>
+            <dependencies>
+                <group name="negative" depends-on="positive" ></group>
+            </dependencies>
+        </groups>
+        <classes>
+            <class name="com.encode.app.CreateFileTest" >
+                <!--<methods>
+                    <include name="test4" />
+                    <include name="test2" />
+                    <include name="test3" />
+                    <exclude name="test1" />
+                </methods>-->
+            </class>
+        </classes>
+    </test>
+</suite>

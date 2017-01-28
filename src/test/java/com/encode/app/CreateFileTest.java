@@ -21,14 +21,14 @@ public class CreateFileTest extends TestBase {
 
     File dir;
 
-    @BeforeMethod
+    @BeforeMethod (alwaysRun = true)
     public void setUp() {
         dir = new File("tempDir");
         dir.mkdir();
         System.out.println(dir.getAbsolutePath() + " prepared");
     }
 
-    @AfterMethod
+    @AfterMethod (alwaysRun = true)
     public void tearDown() {
         // Cleanup
         if(dir != null) {
@@ -42,21 +42,21 @@ public class CreateFileTest extends TestBase {
         System.out.println("Cleaned up");
     }
 
-    @Test
+    @Test (groups = "positive")
     public void test1() throws IOException {
         File f = new File(dir + "/temp.txt");
         Boolean res = f.createNewFile();
         System.out.println(f.getAbsolutePath() + " created");
     }
 
-    @Test
+    @Test (groups = "positive")
     public void test2() throws IOException {
         File f = new File(dir + "/temp.txt");
         Boolean res = f.createNewFile();
         System.out.println("Function returns " + res);
     }
 
-    @Test
+    @Test (groups = "positive")
     public void test3() throws IOException {
         File f = new File(dir + "/temp.txt");
         f.createNewFile();
@@ -64,7 +64,7 @@ public class CreateFileTest extends TestBase {
         System.out.println("Function returns " + res + ", file already exists");
     }
 
-    @Test
+    @Test (groups = "negative")
     public void test4() {
         File f = new File(dir + "/temp.txt");
         dir.setReadOnly(); // Linux only
