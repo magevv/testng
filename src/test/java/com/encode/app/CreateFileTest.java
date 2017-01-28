@@ -12,7 +12,7 @@ import java.io.IOException;
  3. Function returns FALSE if file with such name already exists
 
  Negative
- 4. File is not created in non-writable directory (Linux only)
+ 4. Correct exception if directory is read-only (Linux only)
  */
 public class CreateFileTest extends TestBase {
 
