@@ -48,17 +48,17 @@ public class CreateFileTest extends TestBase {
     public void test1() throws IOException {
         File f = new File(dir + "/temp.txt");
         f.createNewFile();
-        SoftAssert s = new SoftAssert();
-        s.assertTrue(dir.list().length > 0, "New file not found in the directory."); // file created
-        s.assertEquals(f.getName(), dir.list()[0], "File name"); // file created with correct name
-        s.assertAll();
+        SoftAssert soft = new SoftAssert();
+        soft.assertTrue(dir.list().length > 0, "New file not found in the directory."); // file created
+        soft.assertEquals(f.getName(), dir.list()[0], "File name"); // file created with correct name
+        soft.assertAll();
         System.out.println("Test1: " + f.getAbsolutePath() + " created");
     }
 
     @Test (groups = "positive")
     public void test2() throws IOException {
         File f = new File(dir + "/temp.txt");
-        Assert.assertTrue(!f.createNewFile());
+        Assert.assertTrue(f.createNewFile(), "Function return");
         System.out.println("Test2: Function returns 'true', file created");
     }
 
@@ -66,7 +66,7 @@ public class CreateFileTest extends TestBase {
     public void test3() throws IOException {
         File f = new File(dir + "/temp.txt");
         f.createNewFile(); // file exists
-        Assert.assertFalse(f.createNewFile());
+        Assert.assertFalse(f.createNewFile(), "Function return");
         System.out.println("Test3: Function returns 'false', file already exists");
     }
 
@@ -77,8 +77,8 @@ public class CreateFileTest extends TestBase {
         try {
             f.createNewFile();
         } catch (IOException e) {
-            e.getCause();
-            System.out.println("cannot write file to read-only directory");
+            Assert.assertEquals(e.getMessage(), "Permission denied", "Exception message");
+            System.out.println("Test4: Cannot write file to read-only directory");
         }
     }
 }
