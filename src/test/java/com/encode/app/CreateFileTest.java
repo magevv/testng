@@ -44,9 +44,9 @@ public class CreateFileTest extends TestBase {
         System.out.println("Cleaned up");
     }
 
-    @Test (groups = "positive")
-    public void test1() throws IOException {
-        File f = new File(dir + "/temp.txt");
+    @Test (groups = "positive", dataProviderClass = DataProviders.class, dataProvider = "generateRandomFileName")
+    public void test1(String fileName) throws IOException {
+        File f = new File(dir + "/" + fileName);
         f.createNewFile();
         SoftAssert soft = new SoftAssert();
         soft.assertTrue(dir.list().length > 0, "New file not found in the directory."); // file created
@@ -55,23 +55,23 @@ public class CreateFileTest extends TestBase {
         System.out.println("Test1: " + f.getAbsolutePath() + " created");
     }
 
-    @Test (groups = "positive")
-    public void test2() throws IOException {
+    @Test (groups = "positive", dataProviderClass = DataProviders.class, dataProvider = "generateRandomFileName")
+    public void test2(String fileName) throws IOException {
         File f = new File(dir + "/temp.txt");
         Assert.assertTrue(f.createNewFile(), "Function return");
         System.out.println("Test2: Function returns 'true', file created");
     }
 
-    @Test (groups = "positive")
-    public void test3() throws IOException {
-        File f = new File(dir + "/temp.txt");
+    @Test (groups = "positive", dataProviderClass = DataProviders.class, dataProvider = "readFileNamesFromFile")
+    public void test3(String fileName) throws IOException {
+        File f = new File(dir + "/" + fileName);
         f.createNewFile(); // file exists
         Assert.assertFalse(f.createNewFile(), "Function return");
         System.out.println("Test3: Function returns 'false', file already exists");
     }
 
-    @Test (groups = "negative")
-    public void test4() {
+    @Test (groups = "negative", dataProviderClass = DataProviders.class, dataProvider = "generateRandomFileName")
+    public void test4(String fileName) {
         File f = new File(dir + "/temp.txt");
         dir.setReadOnly(); // Linux only
         try {
