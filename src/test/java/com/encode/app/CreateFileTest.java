@@ -57,7 +57,7 @@ public class CreateFileTest extends TestBase {
 
     @Test (groups = "positive", dataProviderClass = DataProviders.class, dataProvider = "generateRandomFileName")
     public void test2(String fileName) throws IOException {
-        File f = new File(dir + "/temp.txt");
+        File f = new File(dir + "/" + fileName);
         Assert.assertTrue(f.createNewFile(), "Function return");
         System.out.println("Test2: Function returns 'true', file created");
     }
@@ -72,7 +72,7 @@ public class CreateFileTest extends TestBase {
 
     @Test (groups = "negative", dataProviderClass = DataProviders.class, dataProvider = "generateRandomFileName")
     public void test4(String fileName) {
-        File f = new File(dir + "/temp.txt");
+        File f = new File(dir + "/" + fileName);
         dir.setReadOnly(); // Linux only
         try {
             f.createNewFile();
