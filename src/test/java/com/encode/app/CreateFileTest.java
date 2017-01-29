@@ -47,7 +47,7 @@ public class CreateFileTest extends TestBase {
     @Test (groups = "positive")
     public void test1() throws IOException {
         File f = new File(dir + "/temp.txt");
-        Boolean res = f.createNewFile();
+        f.createNewFile();
         SoftAssert s = new SoftAssert();
         s.assertTrue(dir.list().length > 0, "New file not found in the directory."); // file created
         s.assertEquals(f.getName(), dir.list()[0], "File name"); // file created with correct name
