@@ -1,6 +1,8 @@
 package com.encode.app;
 
+import org.testng.Assert;
 import org.testng.annotations.*;
+import org.testng.asserts.SoftAssert;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,22 +48,26 @@ public class CreateFileTest extends TestBase {
     public void test1() throws IOException {
         File f = new File(dir + "/temp.txt");
         Boolean res = f.createNewFile();
-        System.out.println(f.getAbsolutePath() + " created");
+        SoftAssert s = new SoftAssert();
+        s.assertTrue(dir.list().length > 0, "New file not found in the directory."); // file created
+        s.assertEquals(f.getName(), dir.list()[0], "File name"); // file created with correct name
+        s.assertAll();
+        System.out.println("Test1: " + f.getAbsolutePath() + " created");
     }
 
     @Test (groups = "positive")
     public void test2() throws IOException {
         File f = new File(dir + "/temp.txt");
-        Boolean res = f.createNewFile();
-        System.out.println("Function returns " + res);
+        Assert.assertTrue(!f.createNewFile());
+        System.out.println("Test2: Function returns 'true', file created");
     }
 
     @Test (groups = "positive")
     public void test3() throws IOException {
         File f = new File(dir + "/temp.txt");
-        f.createNewFile();
-        Boolean res = f.createNewFile();
-        System.out.println("Function returns " + res + ", file already exists");
+        f.createNewFile(); // file exists
+        Assert.assertFalse(f.createNewFile());
+        System.out.println("Test3: Function returns 'false', file already exists");
     }
 
     @Test (groups = "negative")
@@ -71,6 +77,7 @@ public class CreateFileTest extends TestBase {
         try {
             f.createNewFile();
         } catch (IOException e) {
+            e.getCause();
             System.out.println("cannot write file to read-only directory");
         }
     }
