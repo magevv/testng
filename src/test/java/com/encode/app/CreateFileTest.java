@@ -46,14 +46,14 @@ public class CreateFileTest extends TestBase {
     public void test1() throws IOException {
         File f = new File(dir + "/temp.txt");
         Boolean res = f.createNewFile();
-        System.out.println(f.getAbsolutePath() + " created");
+        System.out.println("Test1: " + f.getAbsolutePath() + " created");
     }
 
     @Test (groups = "positive")
     public void test2() throws IOException {
         File f = new File(dir + "/temp.txt");
         Boolean res = f.createNewFile();
-        System.out.println("Function returns " + res);
+        System.out.println("Test2: Function returns " + res);
     }
 
     @Test (groups = "positive")
@@ -61,7 +61,7 @@ public class CreateFileTest extends TestBase {
         File f = new File(dir + "/temp.txt");
         f.createNewFile();
         Boolean res = f.createNewFile();
-        System.out.println("Function returns " + res + ", file already exists");
+        System.out.println("Test3: Function returns " + res + ", file already exists");
     }
 
     @Test (groups = "negative")
@@ -71,7 +71,7 @@ public class CreateFileTest extends TestBase {
         try {
             f.createNewFile();
         } catch (IOException e) {
-            System.out.println("cannot write file to read-only directory");
+            System.out.println("Test4: cannot write file to read-only directory");
         }
     }
 }
