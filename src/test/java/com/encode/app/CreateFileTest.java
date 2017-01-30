@@ -68,7 +68,7 @@ public class CreateFileTest extends TestBase {
     }
 
     @Test (groups = "negative")
-    public void test4() throws IOException {
+    public void test4() {
         String exception = null;
         String msg = null;
         File f = new File(dir + "/temp.txt");
