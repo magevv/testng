@@ -6,6 +6,7 @@ import org.testng.asserts.SoftAssert;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 /*
 Testing Java function File.createNewFile()
@@ -23,14 +24,20 @@ public class CreateFileTest extends TestBase {
 
     File dir;
 
-    @BeforeMethod (alwaysRun = true)
-    public void setUp() {
+    @BeforeMethod(alwaysRun = true)
+    public void setUp(Method m) {
+
         dir = new File("tempDir");
         dir.mkdir();
-        System.out.println(dir.getAbsolutePath() + " prepared");
+
+        TempDir tempDir = m.getAnnotation(TempDir.class);
+        if (tempDir != null) {
+            dir.setReadable(tempDir.read());
+            dir.setWritable(tempDir.write());
+        }
     }
 
-    @AfterMethod (alwaysRun = true)
+    @AfterMethod(alwaysRun = true)
     public void tearDown() {
         // Cleanup
         if(dir != null) {
@@ -41,7 +48,6 @@ public class CreateFileTest extends TestBase {
             }
             dir.delete();
         }
-        System.out.println("Cleaned up");
     }
 
     @Test (groups = "positive", dataProviderClass = DataProviders.class, dataProvider = "generateRandomFileName")
@@ -68,11 +74,11 @@ public class CreateFileTest extends TestBase {
     }
 
     @Test (groups = "negative", dataProviderClass = DataProviders.class, dataProvider = "generateRandomFileName")
+    @TempDir(write = false)
     public void test4(String fileName) {
         String exception = null;
         String msg = null;
         File f = new File(dir + "/" + fileName);
-        dir.setReadOnly(); // Linux only
         try {
             f.createNewFile();
         } catch (IOException e) {
