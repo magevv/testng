@@ -13,12 +13,12 @@
         </groups>
         <classes>
             <class name="com.encode.app.CreateFileTest" >
-                <!--<methods>
+                <methods>
                     <include name="test4" />
                     <include name="test2" />
                     <include name="test3" />
                     <exclude name="test1" />
-                </methods>-->
+                </methods>
             </class>
         </classes>
     </test>

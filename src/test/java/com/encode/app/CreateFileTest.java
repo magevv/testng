@@ -60,13 +60,15 @@ public class CreateFileTest extends TestBase {
         soft.assertAll();
     }
 
-    @Test (groups = "positive", dataProviderClass = DataProviders.class, dataProvider = "generateRandomFileName")
+    @Test (groups = "positive", dataProviderClass = DataProviders.class, dataProvider = "readFileNamesFromFile")
+    @SourceFile(format = SourceFile.FileFormat.XLS, path = "filenames.xls")
     public void test2(String fileName) throws IOException {
         File f = new File(dir + "/" + fileName);
         Assert.assertTrue(f.createNewFile(), "Function return");
     }
 
     @Test (groups = "positive", dataProviderClass = DataProviders.class, dataProvider = "readFileNamesFromFile")
+    @SourceFile(format = SourceFile.FileFormat.TXT, path = "filenames.txt")
     public void test3(String fileName) throws IOException {
         File f = new File(dir + "/" + fileName);
         f.createNewFile(); // file exists
