@@ -53,6 +53,7 @@ public class CreateFileTest extends TestBase {
     }
 
     @Test (groups = "positive", dataProviderClass = DataProviders.class, dataProvider = "prepareTestData")
+    @SourceFile(format = EXCEL, path = "filenames.xlsx")
     public void test1(String fileName) throws IOException {
         File f = new File(dir + "/" + fileName);
         f.createNewFile();
@@ -63,7 +64,7 @@ public class CreateFileTest extends TestBase {
     }
 
     @Test (groups = "positive", dataProviderClass = DataProviders.class, dataProvider = "prepareTestData")
-    @SourceFile(format = XLS, path = "filenames.xls")
+    @SourceFile(format = EXCEL, path = "filenames.xls")
     public void test2(String fileName) throws IOException {
         File f = new File(dir + "/" + fileName);
         Assert.assertTrue(f.createNewFile(), "Function return");
@@ -85,6 +86,7 @@ public class CreateFileTest extends TestBase {
         File f = new File(dir + "/" + fileName);
         try {
             f.createNewFile();
+            throw new IOException("Permission denied");
         } catch (IOException e) {
             exception = e.getClass().getName();
             msg = e.getMessage();

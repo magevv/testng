@@ -9,6 +9,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.testng.annotations.DataProvider;
 
 public class DataProviders {
@@ -24,10 +25,11 @@ public class DataProviders {
                 case TXT:
                     list = readTxt(sourceFile.path());
                     break;
-                case XLS:
+                case EXCEL:
                     list = readExcel(sourceFile.path());
                     break;
-                default: throw new Error("Not supported format " + sourceFile.format());
+                default:
+                    throw new Error("Not supported format " + sourceFile.format());
             }
         } else {
             list = generateRandomFileName();
@@ -62,7 +64,7 @@ public class DataProviders {
     public static List<Object[]> readExcel(String fileName) throws IOException {
         try (
                 FileInputStream fis = new FileInputStream(new File(resources + fileName));
-                Workbook workbook = new HSSFWorkbook(fis)
+                Workbook workbook = getWorkbook(fis, fileName)
         ) {
             Sheet firstSheet = workbook.getSheetAt(0);
             Iterator<Row> iterator = firstSheet.iterator();
@@ -74,5 +76,18 @@ public class DataProviders {
             }
             return list;
         }
+    }
+
+    private static Workbook getWorkbook(FileInputStream inputStream, String excelFilePath) throws IOException {
+        Workbook workbook = null;
+        if (excelFilePath.endsWith("xlsx")) {
+            workbook = new XSSFWorkbook(inputStream);
+        } else if (excelFilePath.endsWith("xls")) {
+            workbook = new HSSFWorkbook(inputStream);
+        } else {
+            throw new IllegalArgumentException("The specified file is not Excel file");
+        }
+
+        return workbook;
     }
 }

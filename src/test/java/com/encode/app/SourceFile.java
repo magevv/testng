@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SourceFile {
 
-    public enum FileFormat {TXT, XLS}
+    public enum FileFormat {TXT, EXCEL}
 
     FileFormat format();
     String path();
