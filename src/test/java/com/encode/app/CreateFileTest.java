@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
+import static com.encode.app.SourceFile.FileFormat.*;
+
 /*
 Testing Java function File.createNewFile()
 
@@ -50,7 +52,7 @@ public class CreateFileTest extends TestBase {
         }
     }
 
-    @Test (groups = "positive", dataProviderClass = DataProviders.class, dataProvider = "generateRandomFileName")
+    @Test (groups = "positive", dataProviderClass = DataProviders.class, dataProvider = "prepareTestData")
     public void test1(String fileName) throws IOException {
         File f = new File(dir + "/" + fileName);
         f.createNewFile();
@@ -60,22 +62,22 @@ public class CreateFileTest extends TestBase {
         soft.assertAll();
     }
 
-    @Test (groups = "positive", dataProviderClass = DataProviders.class, dataProvider = "readFileNamesFromFile")
-    @SourceFile(format = SourceFile.FileFormat.XLS, path = "filenames.xls")
+    @Test (groups = "positive", dataProviderClass = DataProviders.class, dataProvider = "prepareTestData")
+    @SourceFile(format = XLS, path = "filenames.xls")
     public void test2(String fileName) throws IOException {
         File f = new File(dir + "/" + fileName);
         Assert.assertTrue(f.createNewFile(), "Function return");
     }
 
-    @Test (groups = "positive", dataProviderClass = DataProviders.class, dataProvider = "readFileNamesFromFile")
-    @SourceFile(format = SourceFile.FileFormat.TXT, path = "filenames.txt")
+    @Test (groups = "positive", dataProviderClass = DataProviders.class, dataProvider = "prepareTestData")
+    @SourceFile(format = TXT, path = "filenames.txt")
     public void test3(String fileName) throws IOException {
         File f = new File(dir + "/" + fileName);
         f.createNewFile(); // file exists
         Assert.assertFalse(f.createNewFile(), "Function return");
     }
 
-    @Test (groups = "negative", dataProviderClass = DataProviders.class, dataProvider = "generateRandomFileName")
+    @Test (groups = "negative", dataProviderClass = DataProviders.class, dataProvider = "prepareTestData")
     @TempDir(write = false)
     public void test4(String fileName) {
         String exception = null;

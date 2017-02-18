@@ -2,10 +2,7 @@ package com.encode.app;
 
 import java.io.*;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
@@ -16,26 +13,34 @@ import org.testng.annotations.DataProvider;
 
 public class DataProviders {
 
+    public static String resources = System.getProperty("user.dir") + "\\src\\test\\resources\\";
+
     @DataProvider
-    public static Iterator<Object[]> generateRandomFileName() {
-        List<Object[]> list = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            list.add(new Object[]{"tempfile" + new Random().nextInt() + ".txt"});
+    public static Iterator<Object[]> prepareTestData(Method m) throws IOException {
+        SourceFile sourceFile = m.getAnnotation(SourceFile.class);
+        List<Object[]> list;
+        if (sourceFile != null) {
+            switch (sourceFile.format()) {
+                case TXT:
+                    list = readTxt(sourceFile.path());
+                    break;
+                case XLS:
+                    list = readExcel(sourceFile.path());
+                    break;
+                default: throw new Error("Not supported format " + sourceFile.format());
+            }
+        } else {
+            list = generateRandomFileName();
         }
         return list.iterator();
     }
 
-    @DataProvider
-    public static Iterator<Object[]> readFileNamesFromFile(Method m) throws IOException {
-        SourceFile sourceFile = m.getAnnotation(SourceFile.class);
+    public static List<Object[]> generateRandomFileName() {
         List<Object[]> list = new ArrayList<>();
-        if (sourceFile != null) {
-            switch (sourceFile.format()) {
-                case TXT: list = readTxt(sourceFile.path()); break;
-                case XLS: list = readExcel(sourceFile.path());
-            }
+        for (int i = 0; i < 5; i++) {
+            list.add(new Object[]{"tempfile" + new Random().nextInt() + ".txt"});
         }
-        return list.iterator();
+        return list;
     }
 
     public static List<Object[]> readTxt(String fileName) throws IOException {
@@ -43,7 +48,7 @@ public class DataProviders {
         try (
                 BufferedReader reader = new BufferedReader(
                         new InputStreamReader(
-                                DataProviders.class.getResourceAsStream(fileName)))
+                                DataProviders.class.getResourceAsStream("/" + fileName)))
         ) {
             String s = reader.readLine();
             while (s != null) {
@@ -56,7 +61,7 @@ public class DataProviders {
 
     public static List<Object[]> readExcel(String fileName) throws IOException {
         try (
-                FileInputStream fis = new FileInputStream(new File(fileName));
+                FileInputStream fis = new FileInputStream(new File(resources + fileName));
                 Workbook workbook = new HSSFWorkbook(fis)
         ) {
             Sheet firstSheet = workbook.getSheetAt(0);
