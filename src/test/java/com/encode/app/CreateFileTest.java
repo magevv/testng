@@ -49,6 +49,7 @@ public class CreateFileTest extends TestBase {
                 files[i].delete();
             }
             dir.delete();
+            dir = null;
         }
     }
 
